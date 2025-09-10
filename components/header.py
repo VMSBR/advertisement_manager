@@ -6,4 +6,3 @@ def show_header():
         ui.link("Add event", "/add_event")
         ui.link("Edit event", "/edit_event")
         ui.link("View event", "/view_event")
-        
