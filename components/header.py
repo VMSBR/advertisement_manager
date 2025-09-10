@@ -2,12 +2,6 @@ from nicegui import ui
 
 
 def show_header():
-    with ui.row():
-        ui.link("Home", "/")
-        ui.link("Add event", "/add_event")
-        ui.link("Edit event", "/edit_event")
-        ui.link("View event", "/view_event")
-
     with ui.header().classes("bg-white px-6 py-4"):
         with ui.row().classes("justify-between w-full items-center"):
             ui.label("AGROKASA").classes(
