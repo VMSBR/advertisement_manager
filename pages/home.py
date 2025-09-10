@@ -1,27 +1,28 @@
-from nicegui import ui,app
+from nicegui import ui, app
 
 
 def show_home_page():
+
     # Big container
     with ui.element("div").classes("relative w-full h-screen"):
 
         # Background carousel
         with ui.carousel().props("arrows autoplay swipe infinite").classes(
-            "absolute inset-0 w-full h-full z-[-2]"
-        ):
-            ui.carousel_slide().classes("w-full h-full").style(
-                "background-image: url(/assets/homee.jpg); background-size: cover; background-position: center;"
+            "absolute inset-0 w-screen h-screen z-[-2]"
+        ).style("width: 100vw; height: 100vh;"):
+            ui.carousel_slide().classes("w-screen h-screen").style(
+                "background-image: url(/assets/homee.jpg); background-size: cover; background-position: center; width: 100vw; height: 100vh;"
             )
-            ui.carousel_slide().classes("w-full h-full").style(
-                "background-image: url(/assets/home.jpg); background-size: cover; background-position: center;"
+            ui.carousel_slide().classes("w-screen h-screen").style(
+                "background-image: url(/assets/home.jpg); background-size: cover; background-position: center; width: 100vw; height: 100vh;"
             )
-            ui.carousel_slide().classes("w-full h-full").style(
-                "background-image: url(/assets/homeee.jpg); background-size: cover; background-position: center;"
+            ui.carousel_slide().classes("w-screen h-screen").style(
+                "background-image: url(/assets/homeee.jpg); background-size: cover; background-position: center; width: 100vw; height: 100vh;"
             )
 
-        # Overlay (semi-transparent dark layer)
+        # Overlay (lighter semi-transparent layer for text readability)
         ui.element("div").style(
-            "background: rgba(0,0,0,0.5); position: absolute; inset: 0; z-index: -1;"
+            "background: rgba(0,0,0,0.2); position: absolute; inset: 0; z-index: -1;"
         )
 
         # Foreground content (your UI)
@@ -75,8 +76,8 @@ def show_home_page():
             "text-3xl text-center font-bold relative items-center flex flex-col justify-center font-poppins text-gray-800 "
         )
 
-    with ui.grid(columns=3).classes("gap-20 p-1"):
-        for i in range(6):
+    with ui.grid(columns=4).classes("gap-20 p-1"):
+        for i in range(8):
             with ui.card().classes(
                 "p-4 rounded-xl shadow-lg hover:shadow-xl transition"
             ):
