@@ -76,25 +76,41 @@ def show_home_page():
             "text-3xl text-center font-bold relative items-center flex flex-col justify-center font-poppins text-gray-800 "
         )
 
-    with ui.grid(columns=4).classes("gap-20 p-1"):
-        for i in range(8):
+    # Sample adverts data (would come from backend API)
+    sample_adverts = [
+        {"id": 1, "title": "Fresh Tomatoes", "description": "Organic tomatoes from local farm", "price": "GHC 50", "category": "Vegetables", "flyer": "/assets/freshtomatoes.jpg"},
+        {"id": 2, "title": "Sweet Mangoes", "description": "Juicy mangoes ready to eat", "price": "GHC 30", "category": "Fruits", "flyer": "/assets/sweetmangoes.jpg"},
+        {"id": 3, "title": "Brown Rice", "description": "Premium quality brown rice", "price": "GHC 80", "category": "Grains & Legumes", "flyer": "/assets/brownrice.jpg"},
+        {"id": 4, "title": "Free Range Eggs", "description": "Fresh eggs from free range chickens", "price": "GHC 25", "category": "Dairy & Eggs", "flyer": "/assets/freerangeeggs.jpg"},
+        {"id": 5, "title": "Organic Spinach", "description": "Fresh leafy greens", "price": "GHC 15", "category": "Vegetables", "flyer": "/assets/organicspinach.jpg"},
+        {"id": 6, "title": "Cashew Nuts", "description": "Roasted cashew nuts", "price": "GHC 120", "category": "Nuts", "flyer": "/assets/cashewnuts.jpg"},
+        {"id": 7, "title": "Sweet Potatoes", "description": "Fresh sweet potatoes", "price": "GHC 40", "category": "Tubers", "flyer": "/assets/sweetpotatoes.jpg"},
+        {"id": 8, "title": "Basil Leaves", "description": "Fresh aromatic basil", "price": "GHC 10", "category": "Herbs & Spices", "flyer": "/assets/basilleaves.jpg"}
+    ]
+    
+    # Responsive grid: 1 column on mobile, 2 on tablet, 3 on desktop, 4 on large screens
+    with ui.element("div").classes("grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-4 max-w-7xl mx-auto"):
+        for advert in sample_adverts:
             with ui.card().classes(
-                "p-4 rounded-xl shadow-lg hover:shadow-xl transition"
+                "p-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 bg-white"
             ):
-                ui.image("/assets/sample.jpg").classes(
+                ui.image(advert.get("flyer", "/assets/sample.jpg")).classes(
                     "w-full h-40 object-cover rounded-lg mb-3"
                 )
-                ui.label(f"Name {i+1}").classes(
-                    "text-lg font-semibold font-poppins mb-2"
+                ui.label(advert["title"]).classes(
+                    "text-lg font-semibold font-poppins mb-2 text-[#2E4A3F]"
                 )
-                ui.label("Short description of the product...").classes(
-                    "text-gray-600 mb-3"
+                ui.label(advert["description"]).classes(
+                    "text-gray-600 mb-2 text-sm"
                 )
-                ui.label("Price").classes("text-lg font-bold text-[#2E4A3F] mb-3")
-                with ui.row().classes("justify-between"):
+                ui.label(f"Category: {advert['category']}").classes(
+                    "text-xs text-[#8B5E3C] font-medium mb-2"
+                )
+                ui.label(advert["price"]).classes("text-lg font-bold text-[#2E4A3F] mb-3")
+                with ui.row().classes("gap-2 w-full"):
                     ui.button(
-                        "View", on_click=lambda: ui.navigate.to("/view_advert")
-                    ).classes("bg-green text-white px-4 py-2 rounded-md")
+                        "View", on_click=lambda a=advert: ui.navigate.to(f"/view_advert?id={a['id']}")
+                    ).classes("px-3 py-1 rounded-md text-sm flex-1").style("background-color: #16a34a; color: white;").props("no-caps")
                     ui.button(
-                        "Edit", on_click=lambda: ui.navigate.to("/edit_advert")
-                    ).classes("bg-green text-white px-4 py-2 rounded-md")
+                        "Edit", on_click=lambda a=advert: ui.navigate.to(f"/edit_advert?id={a['id']}")
+                    ).classes("px-3 py-1 rounded-md text-sm flex-1").style("background-color: #22c55e; color: white;").props("no-caps")
