@@ -1,27 +1,19 @@
 from nicegui import ui
-import json
+import requests
+from utils.api import base_url
+
+
+def submit_advert(data):
+    response = requests.post(f"{base_url}/adverts", data)
+    print(response.json())
 
 
 def show_add_advert_page():
-    # Form data storage
-    form_data = {}
+    image_content = None
 
-    def handle_submit():
-        # Collect form data
-        if all(
-            [
-                form_data.get("title"),
-                form_data.get("description"),
-                form_data.get("price"),
-                form_data.get("category"),
-            ]
-        ):
-            # Here you would send data to backend API
-            ui.notify("Advert submitted successfully!", type="positive")
-            # Reset form or redirect
-            ui.navigate.to("/")
-        else:
-            ui.notify("Please fill in all required fields", type="negative")
+    def handle_image_upload(e):
+        nonlocal image_content
+        image_content = e.content
 
     # Fullscreen background with overlay
     with ui.element("div").style(
@@ -49,22 +41,16 @@ def show_add_advert_page():
             with ui.card().classes("w-full p-6 bg-[#F5F5DC] rounded-xl shadow-lg"):
                 title_input = ui.input("Title", placeholder="Enter advert title")
                 title_input.classes("w-full mb-4")
-                title_input.on("input", lambda e: form_data.update({"title": e.value}))
                 desc_input = ui.textarea(
                     "Description", placeholder="Describe your product in detail"
                 )
                 desc_input.classes("w-full mb-4")
-                desc_input.on(
-                    "input", lambda e: form_data.update({"description": e.value})
-                )
                 price_input = ui.input("Price (GHC)", placeholder="Enter price")
                 price_input.classes("w-full mb-4")
-                price_input.on("input", lambda e: form_data.update({"price": e.value}))
                 qty_input = ui.input(
                     "Quantity", placeholder="Enter quantity (e.g., 25 kg)"
                 )
                 qty_input.classes("w-full mb-4")
-                qty_input.on("input", lambda e: form_data.update({"quantity": e.value}))
 
                 category_select = ui.select(
                     [
@@ -81,18 +67,31 @@ def show_add_advert_page():
                     label="Category",
                     value=None,
                 ).classes("w-full mb-6")
-                category_select.on(
-                    "update:model-value",
-                    lambda e: form_data.update({"category": e.value}),
+
+                image_upload = ui.upload(
+                    on_upload=handle_image_upload,
+                    label="Upload Image",
+                    auto_upload=True,
                 )
-
-                image_upload = ui.upload(label="Upload Image", auto_upload=True)
                 image_upload.classes("w-full mb-4")
-                image_upload.on("upload", lambda e: form_data.update({"flyer": e.name}))
 
-                ui.button("Submit Advert", on_click=handle_submit).classes(
-                    "px-6 py-2 rounded-lg w-full"
-                ).style("background-color: #16a34a; color: white;").props("no-caps")
+                ui.button(
+                    "Submit Advert",
+                    on_click=lambda: submit_advert(
+                        {
+                            "title": title_input.value,
+                            "description": desc_input.value,
+                            "price": price_input.value,
+                            "category": category_select.value,
+                            "quantity": qty_input.value,
+                            "flyer": image_content,
+                        }
+                    ),
+                ).classes("px-6 py-2 rounded-lg w-full").style(
+                    "background-color: #16a34a; color: white;"
+                ).props(
+                    "no-caps"
+                )
 
                 # Cancel button
                 ui.button("Cancel", on_click=lambda: ui.navigate.to("/")).classes(
