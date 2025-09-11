@@ -26,6 +26,7 @@ def home_page():
     show_header()
     show_home_page()
 
+
 @ui.page("/add_advert")
 def add_advert_page():
     show_header()
@@ -39,9 +40,9 @@ def edit_advert_page():
 
 
 @ui.page("/view_advert")
-def view_advert_page():
+def view_advert_page(id=""):
     show_header()
-    show_view_advert_page()
+    show_view_advert_page(id)
 
 
 ui.run()
