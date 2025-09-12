@@ -2,6 +2,49 @@ from nicegui import ui
 from urllib.parse import parse_qs
 from utils.api import base_url
 import requests
+import re
+
+
+def format_quantity(quantity):
+    """
+    Standardize quantity display to always show in kg format.
+    Handles various input formats and converts to consistent kg display.
+    """
+    if not quantity:
+        return "0 kg"
+
+    # Convert to string and clean up
+    qty_str = str(quantity).strip().lower()
+
+    # Extract number from the string
+    number_match = re.search(r"(\d+(?:\.\d+)?)", qty_str)
+    if not number_match:
+        return f"{quantity} kg"  # Return original if no number found
+
+    number = float(number_match.group(1))
+
+    # Convert different units to kg
+    if "g" in qty_str and "kg" not in qty_str:
+        # Convert grams to kg
+        number = number / 1000
+    elif "ton" in qty_str or "tonne" in qty_str:
+        # Convert tonnes to kg
+        number = number * 1000
+    elif "lb" in qty_str or "pound" in qty_str:
+        # Convert pounds to kg
+        number = number * 0.453592
+    elif "dozen" in qty_str:
+        # Keep dozen as is, don't convert to kg
+        return f"{int(number)} dozen"
+    elif "piece" in qty_str or "pcs" in qty_str:
+        # Keep pieces as is
+        return f"{int(number)} pieces"
+
+    # Format the number nicely
+    if number == int(number):
+        return f"{int(number)} kg"
+    else:
+        return f"{number:.1f} kg"
 
 
 def show_view_advert_page(id):
@@ -46,10 +89,10 @@ def show_view_advert_page(id):
                 ui.label(f"Category: {advert['category']}").classes(
                     "font-semibold text-[#8B5E3C]"
                 )
-                ui.label(f"Price: {advert['price']}").classes(
+                ui.label(f"Price: GHC {advert['price']}").classes(
                     "font-bold text-[#2E4A3F] mt-2"
                 )
-                ui.label(f"Quantity: {advert['quantity']}").classes(
+                ui.label(f"Quantity: {format_quantity(advert['quantity'])}").classes(
                     "font-semibold text-[#2E4A3F] mt-2"
                 )
 
@@ -57,9 +100,9 @@ def show_view_advert_page(id):
                     ui.button(
                         "Edit", on_click=lambda: ui.navigate.to("/edit_advert")
                     ).classes("px-4 py-2 rounded-md flex-1").style(
-                        "background-color: #16a34a; color: white;"
+                        "background: linear-gradient(135deg, #16a34a, #22c55e) !important; color: white !important; border: none !important;"
                     ).props(
-                        "no-caps"
+                        "no-caps flat"
                     )
 
                     def handle_delete():
@@ -69,9 +112,9 @@ def show_view_advert_page(id):
 
                     ui.button("Delete", on_click=handle_delete).classes(
                         "px-4 py-2 rounded-md flex-1"
-                    ).style("background-color: #dc2626; color: white;").props("no-caps")
+                    ).style("background: linear-gradient(135deg, #16a34a, #22c55e) !important; color: white !important; border: none !important;").props("no-caps flat")
 
                 # Back to home button
                 ui.button("Back to Home", on_click=lambda: ui.navigate.to("/")).classes(
                     "px-4 py-2 rounded-md w-full mt-2"
-                ).style("background-color: #22c55e; color: white;").props("no-caps")
+                ).style("background: linear-gradient(135deg, #16a34a, #22c55e) !important; color: white !important; border: none !important;").props("no-caps flat")

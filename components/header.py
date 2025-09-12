@@ -4,9 +4,9 @@ from nicegui import ui
 def show_header():
     with ui.header().classes("bg-white px-6 py-4"):
         with ui.row().classes("justify-between w-full items-center"):
-            ui.label("AGROKASA").classes(
-                "text-2xl font-bold text-green font-lobster italic"
-            )
+            # Try absolute path for logo
+            with ui.element("div").classes("flex items-center"):
+                ui.html('<img src="/assets/logo.png" alt="AGROKASA" style="height: 80px; width: auto; object-fit: contain;" />')
 
             # removed text-red from here
             with ui.row().classes(
