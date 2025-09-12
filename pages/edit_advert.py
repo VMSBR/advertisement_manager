@@ -1,88 +1,12 @@
 from nicegui import ui
-import json
-from urllib.parse import parse_qs
+import requests
+from utils.api import base_url
 
 
 def show_edit_advert_page():
-    # Get the advert ID from URL parameters
-    query_params = parse_qs(ui.context.client.request.url.query or "")
-    advert_id = int(query_params.get("id", [1])[0])  # Default to 1 if no ID
 
     # Sample adverts data (same as other pages)
-    all_adverts = [
-        {
-            "id": 1,
-            "title": "Fresh Tomatoes",
-            "description": "Organic tomatoes from local farm",
-            "price": "50",
-            "category": "Vegetables",
-            "quantity": "10 kg",
-            "flyer": "/assets/freshtomatoes.jpg",
-        },
-        {
-            "id": 2,
-            "title": "Sweet Mangoes",
-            "description": "Juicy mangoes ready to eat",
-            "price": "30",
-            "category": "Fruits",
-            "quantity": "8 kg",
-            "flyer": "/assets/sweetmangoes.jpg",
-        },
-        {
-            "id": 3,
-            "title": "Brown Rice",
-            "description": "Premium quality brown rice",
-            "price": "80",
-            "category": "Grains & Legumes",
-            "quantity": "20 kg",
-            "flyer": "/assets/brownrice.jpg",
-        },
-        {
-            "id": 4,
-            "title": "Free Range Eggs",
-            "description": "Fresh eggs from free range chickens",
-            "price": "25",
-            "category": "Dairy & Eggs",
-            "quantity": "2 dozen",
-            "flyer": "/assets/freerangeeggs.jpg",
-        },
-        {
-            "id": 5,
-            "title": "Organic Spinach",
-            "description": "Fresh leafy greens",
-            "price": "15",
-            "category": "Vegetables",
-            "quantity": "3 kg",
-            "flyer": "/assets/organicspinach.jpg",
-        },
-        {
-            "id": 6,
-            "title": "Cashew Nuts",
-            "description": "Roasted cashew nuts",
-            "price": "120",
-            "category": "Nuts",
-            "quantity": "5 kg",
-            "flyer": "/assets/cashewnuts.jpg",
-        },
-        {
-            "id": 7,
-            "title": "Sweet Potatoes",
-            "description": "Fresh sweet potatoes",
-            "price": "40",
-            "category": "Tubers",
-            "quantity": "15 kg",
-            "flyer": "/assets/sweetpotatoes.jpg",
-        },
-        {
-            "id": 8,
-            "title": "Basil Leaves",
-            "description": "Fresh aromatic basil",
-            "price": "10",
-            "category": "Herbs & Spices",
-            "quantity": "500g",
-            "flyer": "/assets/basilleaves.jpg",
-        },
-    ]
+    all_adverts = []
 
     # Find the specific advert by ID and use as form data
     selected_advert = next(

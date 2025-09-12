@@ -3,17 +3,20 @@ import requests
 from utils.api import base_url
 
 
-def submit_advert(data):
-    response = requests.post(f"{base_url}/adverts", data)
+image_content = None
+
+
+def handle_image_upload(e):
+    global image_content
+    image_content = e.content
+
+
+def submit_advert(data, files):
+    response = requests.post(f"{base_url}/adverts", data=data, files=files)
     print(response.json())
 
 
 def show_add_advert_page():
-    image_content = None
-
-    def handle_image_upload(e):
-        nonlocal image_content
-        image_content = e.content
 
     # Fullscreen background with overlay
     with ui.element("div").style(
@@ -84,8 +87,10 @@ def show_add_advert_page():
                             "price": price_input.value,
                             "category": category_select.value,
                             "quantity": qty_input.value,
+                        },
+                        files={
                             "flyer": image_content,
-                        }
+                        },
                     ),
                 ).classes("px-6 py-2 rounded-lg w-full").style(
                     "background-color: #16a34a; color: white;"
