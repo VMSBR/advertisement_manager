@@ -98,7 +98,7 @@ def show_view_advert_page(id):
 
                 with ui.row().classes("gap-4 mt-4 flex-wrap w-full"):
                     ui.button(
-                        "Edit", on_click=lambda: ui.navigate.to("/edit_advert")
+                        "Edit", on_click=lambda: ui.navigate.to(f"/edit_advert/{id}")
                     ).classes("px-4 py-2 rounded-md flex-1").style(
                         "background: linear-gradient(135deg, #16a34a, #22c55e) !important; color: white !important; border: none !important;"
                     ).props(

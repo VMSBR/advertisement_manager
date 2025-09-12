@@ -95,10 +95,10 @@ def add_advert_page():
     show_add_advert_page()
 
 
-@ui.page("/edit_advert")
-def edit_advert_page():
+@ui.page("/edit_advert/{advert_id}")
+def edit_advert_page(advert_id):
     show_header()
-    show_edit_advert_page()
+    show_edit_advert_page(advert_id)
 
 
 @ui.page("/view_advert")
