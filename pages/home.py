@@ -206,8 +206,8 @@ def show_home_page():
 
                         ui.button(
                             "Edit",
-                            on_click=lambda a=advert: ui.navigate.to(
-                                f"/edit_advert?id={a['id']}"
+                            on_click=partial(
+                                ui.navigate.to, f"/edit_advert?id={advert['id']}"
                             ),
                         ).classes(
                             "flex-1 px-4 py-2 rounded-lg text-sm font-medium "

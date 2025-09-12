@@ -3,18 +3,26 @@ import requests
 from utils.api import base_url
 
 
-def show_edit_advert_page():
+image_content = None
+
+
+def show_edit_advert_page(data, files):
+    response = requests.post(f"{base_url}/adverts", data=data, files=files)
+    print(response.json())
 
     # Sample adverts data (same as other pages)
     all_adverts = []
 
     # Find the specific advert by ID and use as form data
     selected_advert = next(
-        (advert for advert in all_adverts if advert["id"] == advert_id), all_adverts[0]
+        (advert for advert in all_adverts if advert["id"] == advert), all_adverts[0]
     )
     form_data = selected_advert.copy()
 
-    def handle_update():
+    def handle_update(e):
+        global image_content
+        image_content = e.content
+
         # Collect form data
         if all(
             [
